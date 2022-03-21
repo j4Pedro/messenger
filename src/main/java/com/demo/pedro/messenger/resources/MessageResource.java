@@ -17,7 +17,7 @@ public class MessageResource {
 	MessageService messageService = new MessageService();
 	
 	@GET
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Message> getMessages() {
 		return messageService.getAllMessages();
 	}
@@ -25,7 +25,7 @@ public class MessageResource {
 	
 	@GET
 	@Path("/{messageId}")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Message getMessage(@PathParam("messageId") long id) {
 		return messageService.getMessage(id );
 //		return "get path param : "+messageId;
