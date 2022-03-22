@@ -8,12 +8,12 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
 @Provider
-public class DataNotFoundExceptionMApper implements ExceptionMapper<DataNotFoundException>{
+public class GenericExceptionMapper implements ExceptionMapper<Throwable>{
 
 	@Override
-	public Response toResponse(DataNotFoundException ex) {
-		ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(),404,"https://www.google.com.tw/");
-		return Response.status(Status.NOT_FOUND)
+	public Response toResponse(Throwable ex) {
+		ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(),500,"https://www.google.com.tw/");
+		return Response.status(Status.INTERNAL_SERVER_ERROR)
 				.entity(errorMessage)
 				.build();
 	}
