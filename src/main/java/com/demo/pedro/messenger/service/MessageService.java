@@ -29,7 +29,7 @@ public class MessageService {
 		return messageForYear;
 	}
 
-	public List<Message> geAllMessagesPabinated(int start, int size) {
+	public List<Message> getAllMessagesPabinated(int start, int size) {
 		ArrayList<Message> list = new ArrayList<Message>(messages.values());
 		if (start + size > list.size())
 			return new ArrayList<Message>();
