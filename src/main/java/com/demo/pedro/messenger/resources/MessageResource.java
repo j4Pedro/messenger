@@ -1,5 +1,7 @@
 package com.demo.pedro.messenger.resources;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import com.demo.pedro.messenger.model.Message;
@@ -15,7 +17,12 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.UriInfo;
+import javassist.CtNewMethod;
 
 @Path("/messages")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -36,8 +43,18 @@ public class MessageResource {
 	}
 
 	@POST
-	public Message addMessage(Message message) {
-		return messageService.addMessage(message);
+	public Response addMessage(Message message,@Context UriInfo uriInfo) throws URISyntaxException {
+		Message newMessage = messageService.addMessage(message);
+		String newId = String.valueOf(newMessage.getId());
+		URI uri = uriInfo.getAbsolutePathBuilder().path(newId).build();
+		return Response.created(uri)
+				.entity(newMessage)
+				.build();
+		
+//		return Response.status(Status.CREATED)
+//				.entity(newMessage)
+//				.build();
+//		return messageService.addMessage(message);
 	}
 
 	@PUT
