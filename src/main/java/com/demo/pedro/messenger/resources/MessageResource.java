@@ -1,11 +1,12 @@
 package com.demo.pedro.messenger.resources;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.demo.pedro.messenger.model.Message;
+import com.demo.pedro.messenger.resources.beans.MessageFilterBean;
 import com.demo.pedro.messenger.service.MessageService;
 
+import jakarta.ws.rs.BeanParam;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -14,7 +15,6 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 
 @Path("/messages")
@@ -25,14 +25,12 @@ public class MessageResource {
 	MessageService messageService = new MessageService();
 
 	@GET
-	public List<Message> getMessages(@QueryParam("year") int year, 
-									 @QueryParam("start") int start,
-									 @QueryParam("size") int size) {
-		if (year > 0) {
-			return messageService.getAllMessageForYear(year);
+	public List<Message> getMessages(@BeanParam MessageFilterBean fileterBean) {
+		if (fileterBean.getYear() > 0) {
+			return messageService.getAllMessageForYear(fileterBean.getYear());
 		}
-		if (start > 0 && size > 0) {
-			return messageService.getAllMessagesPabinated(start, size);
+		if (fileterBean.getStart() > 0 && fileterBean.getSize() > 0) {
+			return messageService.getAllMessagesPabinated(fileterBean.getStart(), fileterBean.getSize());
 		}
 		return messageService.getAllMessages();
 	}
