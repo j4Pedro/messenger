@@ -21,7 +21,7 @@ public class MessageService {
 		ArrayList<Message> messageForYear = new ArrayList<Message>(messages.values());
 		Calendar cal = Calendar.getInstance();
 		for (Message message : messages.values()) {
-			cal.setTime(message.getCreate());
+			cal.setTime(message.getCreated());
 			if (cal.get(Calendar.YEAR) == year) {
 				messageForYear.add(message);
 			}

@@ -18,11 +18,11 @@ public class Profile {
 	}
 
 	public Profile(long id, String profileName, String firstName, String lastName) {
-		super();
 		this.id = id;
 		this.profileName = profileName;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.created = new Date();
 	}
 
 	public long getId() {

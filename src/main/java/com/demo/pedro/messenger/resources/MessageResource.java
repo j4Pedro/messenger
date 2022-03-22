@@ -48,7 +48,7 @@ public class MessageResource {
 	}
 
 	@DELETE
-	@Path("/{messageId}")
+	@Path("/{messageId}") 
 	public void deleteMessage(@PathParam("messageId") long id) {
 		messageService.removeMessage(id);
 	}
@@ -58,6 +58,11 @@ public class MessageResource {
 	public Message getMessage(@PathParam("messageId") long id) {
 		return messageService.getMessage(id);
 //		return "get path param : "+messageId;
+	}
+	
+	@Path("/{messageId}/comments")
+	public CommentResource getCommentResource() {
+		return new CommentResource();
 	}
 
 }
