@@ -6,7 +6,13 @@ import java.util.Map;
 
 import com.demo.pedro.messenger.database.DatabaseClass;
 import com.demo.pedro.messenger.model.Comment;
+import com.demo.pedro.messenger.model.ErrorMessage;
 import com.demo.pedro.messenger.model.Message;
+
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 
 public class CommentService {
 
@@ -18,21 +24,33 @@ public class CommentService {
 	}
 
 	public Comment getComment(long messageId, long commentId) {
+		ErrorMessage errorMessage = new ErrorMessage("Not Found!", 404, "https://www.google.com.tw/");
+		Response response = Response.status(Status.NOT_FOUND)
+				.entity(errorMessage)
+				.build();
+		Message message = messages.get(messageId);
+		if (message == null) {
+			throw new WebApplicationException(response);
+		}
 		Map<Long, Comment> comments = messages.get(messageId).getComments();
-		return comments.get(commentId);
+		Comment comment = comments.get(commentId);
+		if (comment == null) {
+			throw new NotFoundException(response);
+		}
+		return comment;
 
 	}
 
 	public Comment addComment(long messageId, Comment comment) {
 		Map<Long, Comment> comments = messages.get(messageId).getComments();
-		comment.setId(comments.size()+1);
+		comment.setId(comments.size() + 1);
 		comments.put(comment.getId(), comment);
 		return comment;
 	}
 
 	public Comment updateComment(long messageId, Comment comment) {
 		Map<Long, Comment> comments = messages.get(messageId).getComments();
-		if(comment.getId()<=0) {
+		if (comment.getId() <= 0) {
 			return null;
 		}
 		comments.put(comment.getId(), comment);
@@ -42,6 +60,6 @@ public class CommentService {
 	public Comment removeComment(long messageId, long commentId) {
 		Map<Long, Comment> comments = messages.get(messageId).getComments();
 		return comments.remove(commentId);
-	}	
+	}
 
 }
